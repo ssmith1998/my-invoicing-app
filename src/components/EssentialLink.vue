@@ -1,9 +1,7 @@
 <template>
+<router-link class="link" :to="{name: linkName}">
   <q-item
     clickable
-    tag="a"
-    target="_blank"
-    :href="link"
   >
     <q-item-section
       v-if="icon"
@@ -14,11 +12,10 @@
 
     <q-item-section>
       <q-item-label>{{ title }}</q-item-label>
-      <q-item-label caption>
-        {{ caption }}
-      </q-item-label>
     </q-item-section>
   </q-item>
+
+</router-link>
 </template>
 
 <script>
@@ -37,7 +34,7 @@ export default defineComponent({
       default: ''
     },
 
-    link: {
+    linkName: {
       type: String,
       default: '#'
     },
@@ -49,3 +46,8 @@ export default defineComponent({
   }
 })
 </script>
+<style lang="scss">
+.link {
+  text-decoration: none;
+}
+</style>
