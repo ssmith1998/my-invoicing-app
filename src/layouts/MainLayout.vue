@@ -3,6 +3,7 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn
+        class="gt-xs"
           flat
           dense
           round
@@ -11,7 +12,7 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
+        <q-toolbar-title class="text-center">
           My Invoicing
         </q-toolbar-title>
 
@@ -20,6 +21,8 @@
     </q-header>
 
     <q-drawer
+    class="gt-xs"
+    no-swipe-open
       v-model="leftDrawerOpen"
       show-if-above
       bordered
@@ -39,7 +42,7 @@
       </q-list>
     </q-drawer>
 
-<q-footer>
+<q-footer class="xs">
     <q-tabs
         v-model="tab"
       >

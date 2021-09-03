@@ -6,22 +6,6 @@ const routes = [{
         component: () => import('pages/Index.vue')
       },
       {
-        path: 'auth',
-        component: () => import('pages/Index.vue'),
-        children: [{
-            path: '/login',
-            name: 'Login',
-            component: () => import('pages/Index.vue')
-          },
-
-          {
-            path: '/register',
-            name: 'Register',
-            component: () => import('pages/Index.vue')
-          },
-        ]
-      },
-      {
         path: 'invoices',
         name: 'Invoices',
         component: () => import('pages/Index.vue'),
@@ -37,6 +21,22 @@ const routes = [{
         component: () => import('pages/Index.vue'),
       }
 
+    ]
+  },
+  {
+    path: '/auth',
+    component: () => import('layouts/Public.vue'),
+    children: [{
+        path: 'login',
+        name: 'Login',
+        component: () => import('pages/Login.vue')
+      },
+
+      {
+        path: 'register',
+        name: 'Register',
+        component: () => import('pages/Register.vue')
+      },
     ]
   },
 
