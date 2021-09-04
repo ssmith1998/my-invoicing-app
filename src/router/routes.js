@@ -1,9 +1,10 @@
 const routes = [{
     path: '/',
+    redirect: 'invoices',
     component: () => import('layouts/MainLayout.vue'),
     children: [{
-        path: '',
-        component: () => import('pages/Index.vue')
+        path: 'invoices',
+        component: () => import('pages/Invoices.vue')
       },
       {
         path: 'invoices',
