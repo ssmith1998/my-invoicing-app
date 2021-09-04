@@ -8,7 +8,7 @@ const routes = [{
       {
         path: 'invoices',
         name: 'Invoices',
-        component: () => import('pages/Index.vue'),
+        component: () => import('pages/Invoices.vue'),
       },
       {
         path: 'templates',
