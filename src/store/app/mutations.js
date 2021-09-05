@@ -1,2 +1,3 @@
-export function someMutation (/* state */) {
+export function authenticated(state, payload) {
+  state.isAuthenticated = payload
 }

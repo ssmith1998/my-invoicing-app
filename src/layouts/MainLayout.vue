@@ -16,7 +16,7 @@
           My Invoicing
         </q-toolbar-title>
 
-        <div><q-btn color="white" label="Logout" flat/></div>
+        <div><q-btn @click="onLogout" color="white" label="Logout" flat/></div>
       </q-toolbar>
     </q-header>
 
@@ -82,6 +82,7 @@ const linksList = [
 ];
 
 import { defineComponent, ref } from 'vue'
+import {mapActions} from 'vuex'
 
 export default defineComponent({
   name: 'MainLayout',
@@ -99,8 +100,21 @@ export default defineComponent({
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
+      },
+    }
+
+   
+  },
+
+      methods: {
+        ...mapActions('app', ['Logout']),
+      onLogout() {
+        this.Logout().then((response) => {
+          if(!this.$store.state.app.isAuthenticated){
+            this.$router.push({name: 'Login'})
+          }
+        });
       }
     }
-  }
 })
 </script>

@@ -2,6 +2,7 @@ import {
   boot
 } from 'quasar/wrappers'
 import axios from 'axios'
+import store from '../store'
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -13,7 +14,22 @@ const api = axios.create({
   baseURL: 'http://api.myinvoicing.gomedia:8000/api',
 })
 
-api.defaults.withCredentials = true
+api.defaults.withCredentials = true;
+
+
+// api.interceptors.response.use(undefined, function (error) {
+//   if (error) {
+//     const originalRequest = error.config;
+//     if (error.response.status === 401 && !originalRequest._retry) {
+
+//       originalRequest._retry = true;
+//       store.dispatch('LogOut')
+//       return router.push({
+//         name: 'Login'
+//       })
+//     }
+//   }
+// })
 
 export default boot(({
   app

@@ -25,7 +25,7 @@ module.exports = configure(function (ctx) {
     // https://v2.quasar.dev/quasar-cli/boot-files
     boot: [
       'axios',
-      'components',
+      'components'
     ],
 
     // https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -81,7 +81,7 @@ module.exports = configure(function (ctx) {
     devServer: {
       https: false,
       host: 'app.myinvoicing.gomedia',
-      port: 8080,
+      port: 8081,
       open: true // opens browser window automatically
     },
 

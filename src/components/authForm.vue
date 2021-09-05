@@ -6,7 +6,7 @@
           <q-input label="Password" type="password" v-model="authForm.password"/>
           <q-input v-if="type === 'Register'" label="Confirm Password" type="password" v-model="authForm.confirmPassword"/>
           <q-btn color="primary" @click="onRegister" v-if="type === 'Register' " :disable="!authForm.password || !authForm.email ||!authForm.confirmPassword" :label="type" class="q-mt-md"/>
-          <q-btn color="primary" v-else :label="type" :disable="!authForm.email || !authForm.password" class="q-mt-md"/>
+          <q-btn color="primary" @click="onLogin" v-else :label="type" :disable="!authForm.email || !authForm.password" class="q-mt-md"/>
       </form>
       </q-card>
       <notification :title="notification.title" :message="notification.message" :type="notification.type" :show="notification.show" />
@@ -37,7 +37,7 @@ data () {
     }
 },
 methods: {
-    ...mapActions('app', ['Register']),
+    ...mapActions('app', ['Register', 'Login']),
     onRegister () {
         this.Register({email: this.authForm.email, password:this.authForm.password}).then(response => {
             console.log(response)
@@ -54,6 +54,20 @@ methods: {
                    position: 'top-right',
                    color: 'red'
                })
+            }
+        })
+    },
+
+    onLogin () {
+        this.Login({email: this.authForm.email, password:this.authForm.password}).then((response) => {
+            if(this.$store.state.app.isAuthenticated) {
+                this.$router.push({name: 'Invoices'})
+            }else{
+              Notify.create({
+                   message: response.data.message,
+                   position: 'top-right',
+                   color: 'red'
+               })  
             }
         })
     }
