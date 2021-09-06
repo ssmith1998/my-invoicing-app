@@ -2,14 +2,19 @@
 <div class="backDrop" v-if="show">
   <q-card class="notificationWrapper">
       <q-card-section>
-          <h3>{{title}}</h3>
+          <h3 class="text-center text-positive text-h4">{{title}}</h3>
       </q-card-section>
        <q-card-section>
-          <h3>{{message}}</h3>
+          <h3 class="text-h5 text-center">{{message}}</h3>
       </q-card-section>
-      <q-card-section>
-         <q-icon name="done"/>
+      <q-card-section class="text-center q-py-xl">
+         <q-icon name="check_circle" class="text-positive" style="font-size:3rem;"/>
          <q-icon name="times"/>
+      </q-card-section>
+      <q-card-section class="q-px-xl">
+          <router-link v-if="actionBtn" @click="onClose" :to="{name: actionBtnLink}" style="text-decoration: none;">
+          <q-btn color="primary" :label="actionBtnText" class="full-width"/>
+          </router-link>
       </q-card-section>
   </q-card>
 </div>
@@ -35,7 +40,24 @@ export default {
         type: {
             type: String,
             default: ''
+        },
+        actionBtn: {
+            type: Boolean,
+            default: false
+        },
+        actionBtnText: {
+            type: String,
+            default: ''
+        },
+        actionBtnLink: {
+            type: String,
+            default: ''
         }
+    },
+    methods: {
+        onClose () {
+            this.$emit('close', true)
+    }
     }
 
 }

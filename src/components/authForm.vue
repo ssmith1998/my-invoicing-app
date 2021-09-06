@@ -9,7 +9,7 @@
           <q-btn color="primary" @click="onLogin" v-else :label="type" :disable="!authForm.email || !authForm.password" class="q-mt-md"/>
       </form>
       </q-card>
-      <notification :title="notification.title" :message="notification.message" :type="notification.type" :show="notification.show" />
+      <notification :actionBtn="true" actionBtnLink='Login' actionBtnText="Login" @close="closeNotification" :title="notification.title" :message="notification.message" :type="notification.type" :show="notification.show" />
   </div>
 
 </template>
@@ -38,10 +38,13 @@ data () {
 },
 methods: {
     ...mapActions('app', ['Register', 'Login']),
+    closeNotification () {
+     this.notification.show = false
+    },
     onRegister () {
         this.Register({email: this.authForm.email, password:this.authForm.password}).then(response => {
             console.log(response)
-            if(response.success) {
+            if(response.data.success) {
             this.notification = {
                 type: 'success',
                 message: `You have registered successfully!`,

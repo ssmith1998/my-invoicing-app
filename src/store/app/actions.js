@@ -20,8 +20,11 @@ export function Login({
       api.post('/login', payload).then(response => {
         resolve(response)
         if (response.data.success === true) {
+          console.log(response)
           console.log('yes');
           commit('authenticated', true)
+          commit('user', response.data.data)
+          localStorage.setItem('user', JSON.stringify(response.data.data))
         }
 
       })
@@ -34,7 +37,9 @@ export async function Logout({
 }, payload) {
   return new Promise((resolve, reject) => {
     api.post('/logout', payload).then(response => {
+      localStorage.removeItem('user')
       commit('authenticated', false)
+      commit('user', {})
       resolve(response)
 
     })

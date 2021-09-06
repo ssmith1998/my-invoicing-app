@@ -39,7 +39,7 @@ export default route(function ( /* { store, ssrContext } */ ) {
 
   Router.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.auth)) {
-      if (store.state.app.isAuthenticated) {
+      if (localStorage.getItem('user')) {
         next();
         return;
       }
