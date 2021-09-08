@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-px-md">
-      <h1 class="text-center text-h3">Invoices</h1>
+      <h1 class="text-center text-h4">Invoices</h1>
 
     <q-table
       title="Invoices"

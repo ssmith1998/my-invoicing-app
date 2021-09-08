@@ -31,7 +31,7 @@ const routes = [{
         meta: {
           auth: true
         },
-        component: () => import('pages/Index.vue'),
+        component: () => import('pages/Details.vue'),
       }
 
     ]
