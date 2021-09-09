@@ -65,7 +65,9 @@
                                              <div class="col-xs-12 col-sm-6 q-pa-md">
                                                <q-input
                                                label="Card Sort Code"
+                                               maxlength="6"
                                                v-model="userDetails.sortCode"
+                                               @keyup="onCheckSortCodeLength"
                                                @blur="onFormatSortCode"
                                                >
                                                </q-input>
@@ -91,6 +93,7 @@
  export default {
      data () {
          return { 
+             sortCodeFormatted: false,
              tab:'details',
              userDetails: {
                  name:'',
@@ -107,12 +110,31 @@
              this.userDetails.email = this.user.email
          },
          onFormatSortCode () {
+             if(!this.sortCodeFormatted){
              console.log('hello')
            
-            var parts = this.userDetails.sortCode.match(/.{1,3}/g);
-            parts.join("-")
-            this.userDetails.sortCode = parts
-         }
+           let res = this.chunk(this.userDetails.sortCode, 2).join('-')
+
+           this.userDetails.sortCode = res
+           this.sortCodeFormatted = true
+             }
+         },
+         onCheckSortCodeLength () {
+             if(this.userDetails.sortCode.length < 6) {
+                 this.sortCodeFormatted = false
+             }
+         },
+            chunk(str, n) {
+            var ret = [];
+            var i;
+            var len;
+
+            for(i = 0, len = str.length; i < len; i += n) {
+            ret.push(str.substr(i, n))
+            }
+
+             return ret
+            }
      },
 
      computed: {
