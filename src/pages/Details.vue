@@ -59,6 +59,10 @@
                                                <q-input
                                                label="Card Account Number"
                                                v-model="userDetails.accountNumber"
+                                               maxlength="8"
+                                                :rules="[
+                                                (val) => val.length === 8 || 'Card Number must be 8 characters long'
+                                                ]"
                                                >
                                                </q-input>
                                            </div>
@@ -110,7 +114,7 @@
              this.userDetails.email = this.user.email
          },
          onFormatSortCode () {
-             if(!this.sortCodeFormatted){
+             if(!this.sortCodeFormatted && this.userDetails.sortCode.length === 6 ){
              console.log('hello')
            
            let res = this.chunk(this.userDetails.sortCode, 2).join('-')
