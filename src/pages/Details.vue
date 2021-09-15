@@ -86,6 +86,7 @@
 
                        <q-tab-panel name="contacts">
                            <h4>Contacts</h4>
+    <q-btn label="Import Contacts" color="primary" @click="onImportContacts"/>                       
     <q-expansion-item
     v-for="(item, index) in importedContacts"
     :key="index"
@@ -100,7 +101,7 @@
           </q-card-section>
         </q-card>
     </q-expansion-item>
-                           <q-btn label="Import Contacts" color="primary" @click="onImportContacts"/>                       </q-tab-panel>
+    </q-tab-panel>
 
          </q-tab-panels>
 
