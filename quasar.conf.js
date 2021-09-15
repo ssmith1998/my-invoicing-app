@@ -80,7 +80,7 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       https: false,
-      host: 'app.myinvoicing.gomedia',
+      host: ctx.mode.cordova ? 'localhost' : 'app.myinvoicing.gomedia',
       port: 8081,
       open: true // opens browser window automatically
     },

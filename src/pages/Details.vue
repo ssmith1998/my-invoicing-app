@@ -86,7 +86,21 @@
 
                        <q-tab-panel name="contacts">
                            <h4>Contacts</h4>
-                       </q-tab-panel>
+    <q-expansion-item
+    v-for="(item, index) in importedContacts"
+    :key="index"
+        expand-separator
+        icon="perm_identity"
+        :label="item.name"
+        caption="Contact"
+      >
+        <q-card>
+          <q-card-section>
+          <p v-for="(email, index) in item.emails" :key="index">email: {{email.value}}</p>
+          </q-card-section>
+        </q-card>
+    </q-expansion-item>
+                           <q-btn label="Import Contacts" color="primary" @click="onImportContacts"/>                       </q-tab-panel>
 
          </q-tab-panels>
 
@@ -94,6 +108,7 @@
     </q-page>
  </template>
  <script>
+     
  export default {
      data () {
          return { 
@@ -106,10 +121,33 @@
                  postcode: '',
                  accountNumber: '',
                  sortCode: '',
-             }
+             },
+             importedContacts: []
          }
      },
      methods: {
+onImportContacts() {
+var options = new ContactFindOptions();
+options.multiple = true;
+var fields = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
+navigator.contacts.find(fields, this.onSuccessContacts, this.onError, options);
+
+},
+ onSuccessContacts(contacts) {
+    console.log(contacts)
+    this.importedContacts = []
+ contacts.forEach(contact => {
+      this.importedContacts.push({ 
+            name:contact.displayName,
+            emails: contact.emails
+        })
+    })
+    console.log(this.importedContacts)
+},
+
+onError(contactError) {
+    alert('onError!');
+},
          loadUserDetails () {
              this.userDetails.email = this.user.email
          },

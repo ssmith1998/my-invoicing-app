@@ -3,6 +3,9 @@ import {
 } from 'quasar/wrappers'
 import axios from 'axios'
 import store from '../store'
+import {
+  Platform
+} from 'quasar'
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -11,7 +14,7 @@ import store from '../store'
 // "export default () => {}" function below (which runs individually
 // for each client)
 const api = axios.create({
-  baseURL: 'http://api.myinvoicing.gomedia:8000/api',
+  baseURL: Platform.is.mobile ? 'http://10.0.2.2:8000/api' : 'http://api.myinvoicing.gomedia:8000/api',
 })
 
 api.defaults.withCredentials = true;
