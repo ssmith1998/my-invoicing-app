@@ -86,22 +86,84 @@
 
                        <q-tab-panel name="contacts">
                            <h4>Contacts</h4>
-    <q-btn label="Import Contacts" color="primary" @click="onImportContacts"/>                       
-    <q-expansion-item
-    v-for="(item, index) in importedContacts"
-    :key="index"
-        expand-separator
-        icon="perm_identity"
-        :label="item.name"
-        caption="Contact"
-      >
-        <q-card>
-          <q-card-section>
-          <p v-for="(email, index) in item.emails" :key="index">email: {{email.value}}</p>
-          </q-card-section>
-        </q-card>
-    </q-expansion-item>
-    </q-tab-panel>
+                <!-- import contacts option for mobile -->
+                 <q-btn class="lt-sm" label="Import Contacts" color="primary" @click="onImportContacts"/>                       
+                 <q-expansion-item
+                    v-for="(item, index) in importedContacts"
+                    :key="index"
+                        expand-separator
+                        icon="perm_identity"
+                        :label="item.name"
+                        caption="Contact"
+                    >
+                        <q-card>
+                        <q-card-section>
+                        <p v-for="(email, index) in item.emails" :key="index">email: {{email.value}}</p>
+                        </q-card-section>
+                        </q-card>
+                    </q-expansion-item>
+                <!-- import contacts option for mobile end -->
+
+                <q-table
+                class="gt-xs"
+                title="Contacts"
+                :rows="contacts"
+                :columns="contactColumns"
+                row-key="id"
+                >
+                    <template v-slot:top>
+                    <q-icon name="add_circle" style="font-size:45px; cursor:pointer;" color="positive" @click="addContactDialog = true"/>
+                    </template>
+    
+                 </q-table>
+                <q-dialog v-model="addContactDialog">
+                <q-card style="width:90%;" >
+                    <q-card-section>
+                        <h1 class="text-h5 q-ma-none">Add contact</h1>
+                    </q-card-section>
+                    <q-card-section>
+                        <form>
+                        <div class="row">
+                        <div class="col-xs-12 col-sm-4">
+                            <q-select
+                            label="Customer"
+                            v-model="contact.customer"
+                            >
+
+                            </q-select>
+                        </div>
+                        <div class="col-xs-12 col-sm-4">
+                            <q-select
+                            label="Template"
+                            v-model="contact.template"
+                            >
+
+                            </q-select>
+                        </div>
+                        <div v-if="!contact.template" class="col-xs-12 col-sm-4">
+                            <q-input
+                            label="Name"
+                            v-model="contact.name"
+                            ></q-input>
+                        </div>
+                        <div class="col-xs-12 col-sm-4">
+                            <q-input
+                            label="Due Date"
+                            v-model="contact.due_date"
+                            type="date"
+                            ></q-input>
+                        </div>
+                        </div>
+                        </form>
+                    </q-card-section>
+
+                </q-card>
+
+
+                </q-dialog>
+
+
+                </q-tab-panel>
 
          </q-tab-panels>
 
@@ -113,6 +175,35 @@
  export default {
      data () {
          return { 
+             addContactDialog: false,
+             contacts: [],
+             contactColumns: 
+             [
+             {
+                name: 'id',
+                required: true,
+                label: '#',
+                align: 'left',
+                field: row => row.id,
+                sortable: true
+            },
+            {
+                name: 'name',
+                required: true,
+                label: 'Name',
+                align: 'left',
+                field: row => row.name,
+                sortable: true
+            },
+            {
+                name: 'email',
+                required: true,
+                label: 'Email',
+                align: 'left',
+                field: row => row.email,
+                sortable: true
+            },
+             ],
              sortCodeFormatted: false,
              tab:'details',
              userDetails: {
