@@ -6,6 +6,7 @@ import {
 } from 'vuex'
 
 import app from './app'
+import contact from './contact'
 
 /*
  * If not building with SSR mode, you can
@@ -18,7 +19,8 @@ import app from './app'
 
 export default store = createStore({
   modules: {
-    app
+    app,
+    contact
   },
 
   // enable strict mode (adds overhead!)

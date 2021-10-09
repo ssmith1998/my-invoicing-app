@@ -1,0 +1,27 @@
+import {
+  api
+} from "src/boot/axios"
+import axios from 'axios'
+import {
+  Platform
+} from 'quasar'
+export function list({
+  commit
+}, payload) {
+  return new Promise((resolve, reject) => {
+    api.get('/contacts', payload).then(response => {
+      commit('list', response.data)
+      resolve(response)
+    })
+  })
+}
+export function store({
+  commit
+}, payload) {
+  return new Promise((resolve, reject) => {
+    api.post('/contacts', payload).then(response => {
+      commit('add', response.data.contact)
+      resolve(response)
+    })
+  })
+}

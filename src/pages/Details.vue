@@ -107,12 +107,12 @@
                 <q-table
                 class="gt-xs"
                 title="Contacts"
-                :rows="contacts"
+                :rows="contactsData"
                 :columns="contactColumns"
                 row-key="id"
                 >
                     <template v-slot:top>
-                    <q-icon name="add_circle" style="font-size:45px; cursor:pointer;" color="positive" @click="addContactDialog = true"/>
+                    <q-icon name="add_circle" style="font-size:45px; cursor:pointer;" color="positive" @click="onAdd"/>
                     </template>
     
                  </q-table>
@@ -124,34 +124,58 @@
                     <q-card-section>
                         <form>
                         <div class="row">
-                        <div class="col-xs-12 col-sm-4">
-                            <q-select
-                            label="Customer"
-                            v-model="contact.customer"
-                            >
-
-                            </q-select>
-                        </div>
-                        <div class="col-xs-12 col-sm-4">
-                            <q-select
-                            label="Template"
-                            v-model="contact.template"
-                            >
-
-                            </q-select>
-                        </div>
-                        <div v-if="!contact.template" class="col-xs-12 col-sm-4">
+                        <div class="col-xs-12 col-sm-4 q-pa-md">
                             <q-input
                             label="Name"
                             v-model="contact.name"
+                            type="text"
+                            >
+
+                            </q-input>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 q-pa-md">
+                            <q-input
+                            label="Email"
+                            v-model="contact.email"
+                            type="email"
+                            >
+
+                            </q-input>
+                        </div>
+                        <div  class="col-xs-12 col-sm-4 q-pa-md">
+                            <q-input
+                            label="Phone"
+                            v-model="contact.phone"
+                            prefix="+44"
                             ></q-input>
                         </div>
-                        <div class="col-xs-12 col-sm-4">
+                        <div class="col-xs-12 col-sm-4 q-pa-md">
                             <q-input
-                            label="Due Date"
-                            v-model="contact.due_date"
-                            type="date"
+                            label="Address Line 1"
+                            v-model="contact.address_line_1"
+                            type="text"
                             ></q-input>
+                        </div>
+                         <div class="col-xs-12 col-sm-4 q-pa-md">
+                            <q-input
+                            label="Address Line 2"
+                            v-model="contact.address_line_2"
+                            type="text"
+                            ></q-input>
+                        </div>
+                         <div class="col-xs-12 col-sm-4 q-pa-md">
+                            <q-input
+                            label="Postcode"
+                            v-model="contact.postcode"
+                            type="text"
+                            ></q-input>
+                        </div>
+                         <div class="col-xs-12 col-sm-6 justify-center q-pa-md">
+                            <q-btn
+                            @click="onSubmitContact"
+                            label="Create Contact"
+                            color="primary"
+                            ></q-btn>
                         </div>
                         </div>
                         </form>
@@ -175,6 +199,16 @@
  export default {
      data () {
          return { 
+             add: false,
+             contact: {
+                email:'' ,
+                phone: '',
+                name: '',
+                address_line_1: '',
+                address_line_2: '',
+                postcode: '',
+
+             },
              addContactDialog: false,
              contacts: [],
              contactColumns: 
@@ -236,6 +270,11 @@ navigator.contacts.find(fields, this.onSuccessContacts, this.onError, options);
     })
     console.log(this.importedContacts)
 },
+onAdd() {
+    this.addContactDialog = true
+    this.add = true
+    this.contact = {}
+},
 
 onError(contactError) {
     alert('onError!');
@@ -268,12 +307,25 @@ onError(contactError) {
             }
 
              return ret
-            }
+            },
+        onSubmitContact() {
+            this.$store.dispatch('contact/store', this.contact).then(response => {
+                if(response.data.success === true) {
+                    this.addContactDialog = false
+                }
+                console.log(response)
+            })
+        }
      },
-
+     mounted() {
+         this.$store.dispatch('contact/list');
+     },
      computed: {
          user () {
              return this.$store.state.app.user
+         },
+         contactsData () {
+             return this.$store.state.contact.contacts
          }
       },
 
