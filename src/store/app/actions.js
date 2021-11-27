@@ -39,7 +39,9 @@ export async function Logout({
   commit
 }, payload) {
   return new Promise((resolve, reject) => {
-    api.post('/logout', payload).then(response => {
+    api.post('/logout', payload, {
+      withCredentials: true
+    }).then(response => {
       localStorage.removeItem('user')
       commit('authenticated', false)
       commit('user', {})

@@ -3,7 +3,7 @@ import {
 } from 'quasar/wrappers'
 import axios from 'axios'
 import store from '../store'
-import router from 'vue';
+import Router from '../router/index';
 import {
   Platform
 } from 'quasar'
@@ -21,17 +21,17 @@ const api = axios.create({
 api.defaults.withCredentials = true;
 
 
-api.interceptors.response.use(undefined, function (error) {
-  if (error) {
-    const originalRequest = error.config;
-    if (error.response.status === 401) {
-      store.dispatch('app/Logout')
-      return router.push({
-        name: 'Login'
-      })
-    }
-  }
-})
+// api.interceptors.response.use(undefined, function (error) {
+//   if (error) {
+//     const originalRequest = error.config;
+//     if (error.response.status === 401) {
+//       store.dispatch('app/Logout')
+//       return Router.push({
+//         name: 'Login'
+//       })
+//     }
+//   }
+// })
 
 export default boot(({
   app
