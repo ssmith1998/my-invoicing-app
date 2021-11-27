@@ -29,3 +29,27 @@ export function store({
     })
   })
 }
+
+export function View({
+  commit
+}, payload) {
+  return new Promise((resolve, reject) => {
+    api.get(`/contacts/${payload.id}`, {
+      withCredentials: true
+    }).then(response => {
+      resolve(response)
+    })
+  })
+}
+
+export function Update({
+  commit
+}, payload) {
+  return new Promise((resolve, reject) => {
+    api.put(`/contacts/${payload.id}`, payload, {
+      withCredentials: true
+    }).then(response => {
+      resolve(response)
+    })
+  })
+}

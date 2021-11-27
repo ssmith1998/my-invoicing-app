@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
@@ -14,7 +15,8 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $contacts = Contact::all();
+        $user = Auth::id();
+        $contacts = Contact::where('user_id', $user)->get();
 
         return response()->json($contacts);
     }
@@ -33,7 +35,8 @@ class ContactController extends Controller
             'phone' => 'required',
             'name' => 'required',
             'address_line_1' => 'required',
-            'postcode' => 'required'
+            'postcode' => 'required',
+            'user_id' => 'required'
         ];
         $this->validate($request, $rules);
 
@@ -42,7 +45,8 @@ class ContactController extends Controller
             'phone' => $request->input('phone'),
             'name' => $request->input('name'),
             'address_line_1' => $request->input('address_line_1'),
-            'postcode' => $request->input('postcode')
+            'postcode' => $request->input('postcode'),
+            'user_id' => $request->input('user_id')
         ]);
 
         return response()->json(['contact' => $contact, 'success' => true]);
@@ -56,7 +60,9 @@ class ContactController extends Controller
      */
     public function show($id)
     {
-        //
+        $contact = Contact::find($id);
+
+        return response()->json($contact, 200);
     }
 
     /**
@@ -68,7 +74,11 @@ class ContactController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $contact = Contact::find($id);
+        $data = $request->input();
+        $contact->update($data);
+
+        return response()->json($contact, 200);
     }
 
     /**

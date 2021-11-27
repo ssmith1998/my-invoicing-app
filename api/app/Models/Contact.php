@@ -15,6 +15,7 @@ class Contact extends Model
         'name',
         'address_line_1',
         'address_line_2',
-        'postcode'
+        'postcode',
+        'user_id'
     ];
 }

@@ -85,7 +85,7 @@
 
 
                        <q-tab-panel name="contacts">
-                           <h4>Contacts</h4>
+                           <h4 class="q-my-md">Contacts</h4>
                 <!-- import contacts option for mobile -->
                  <q-btn class="lt-sm" label="Import Contacts" color="primary" @click="onImportContacts"/>                       
                  <q-expansion-item
@@ -114,12 +114,25 @@
                     <template v-slot:top>
                     <q-icon name="add_circle" style="font-size:45px; cursor:pointer;" color="positive" @click="onAdd"/>
                     </template>
+                    <template v-slot:body-cell-actions='props'>
+                        <td>
+                        <q-icon name="more_vert" size="30px">
+                            <q-menu>
+                                <q-list>
+                                    <q-item @click="onEdit(props.row.id)" clickable>
+                                        Edit
+                                    </q-item>
+                                </q-list>
+                            </q-menu>
+                        </q-icon>
+                        </td>
+                    </template>
     
                  </q-table>
                 <q-dialog v-model="addContactDialog">
                 <q-card style="width:90%;" >
                     <q-card-section>
-                        <h1 class="text-h5 q-ma-none">Add contact</h1>
+                        <h1 class="text-h5 q-ma-none">{{title}}</h1>
                     </q-card-section>
                     <q-card-section>
                         <form>
@@ -172,8 +185,15 @@
                         </div>
                          <div class="col-xs-12 col-sm-6 justify-center q-pa-md">
                             <q-btn
+                            v-if="add"
                             @click="onSubmitContact"
                             label="Create Contact"
+                            color="primary"
+                            ></q-btn>
+                            <q-btn
+                            v-else
+                            @click="onUpdate"
+                            label="Update Contact"
                             color="primary"
                             ></q-btn>
                         </div>
@@ -199,7 +219,9 @@
  export default {
      data () {
          return { 
+             title: '',
              add: false,
+             edit: false,
              contact: {
                 email:'' ,
                 phone: '',
@@ -237,6 +259,12 @@
                 field: row => row.email,
                 sortable: true
             },
+            {
+                name: 'actions',
+                required: true,
+                align: 'left',
+                field:' actions',
+            },
              ],
              sortCodeFormatted: false,
              tab:'details',
@@ -272,10 +300,28 @@ navigator.contacts.find(fields, this.onSuccessContacts, this.onError, options);
 },
 onAdd() {
     this.addContactDialog = true
+    this.title = 'Add Contact'
     this.add = true
     this.contact = {}
 },
+async onEdit (props) {
+this.title = 'Edit Contact'
+this.edit = true
+this.add = false
+console.log(props)
+const resp = await this.$store.dispatch('contact/View', {id: props})
+console.log('RESP',resp)
+this.contact = resp.data
+console.log(this.contact)
+this.addContactDialog = true
 
+},
+async onUpdate() {
+const resp = await this.$store.dispatch('contact/Update', this.contact)
+console.log('UPDATED', resp)
+this.edit = false
+this.addContactDialog = false
+},
 onError(contactError) {
     alert('onError!');
 },
@@ -309,6 +355,7 @@ onError(contactError) {
              return ret
             },
         onSubmitContact() {
+            this.contact.user_id = this.user.id
             this.$store.dispatch('contact/store', this.contact).then(response => {
                 if(response.data.success === true) {
                     this.addContactDialog = false
