@@ -54,29 +54,109 @@
                                                <div class="head">
                                             <h5 class="q-ma-none q-pt-md">Billing Information</h5>
                                                </div>
-                                               <div class="row full-width">
-                                               <div class="col-xs-12 col-sm-6 q-pa-md">
-                                               <q-input
-                                               label="Card Account Number"
-                                               v-model="userDetails.accountNumber"
-                                               maxlength="8"
-                                                :rules="[
-                                                (val) => val.length === 8 || 'Card Number must be 8 characters long'
-                                                ]"
-                                               >
-                                               </q-input>
-                                           </div>
-                                             <div class="col-xs-12 col-sm-6 q-pa-md">
-                                               <q-input
-                                               label="Card Sort Code"
-                                               maxlength="6"
-                                               v-model="userDetails.sortCode"
-                                               @keyup="onCheckSortCodeLength"
-                                               @blur="onFormatSortCode"
-                                               >
-                                               </q-input>
-                                           </div>
-                                               </div>
+                                               <q-markup-table>
+                                                <thead>
+                                                    <tr>
+                                                    <th class="text-left">#</th>
+                                                    <th class="text-left">Card Name</th>
+                                                    <th class="text-right">Card Account Number</th>
+                                                    <th class="text-right">Card Sort Code</th>
+                                                    <th class="text-right">Default</th>
+                                                    <th class="text-right"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr style="background:lightgrey;" v-for="(account, index) in bank_accounts" :key="index">
+                                                    <td class="text-left">
+                                                        {{index + 1}}
+                                                    </td>
+                                                    <td class="text-left">
+                                                        <q-input
+                                                        label="Card Name"
+                                                        v-model="account.card_name"
+                                                        type="text"
+                                                        >
+                                                        </q-input>
+                                                    </td>
+                                                    <td class="text-right">
+                                                            <q-input
+                                                            label="Card Account Number"
+                                                            v-model="account.accountNumber"
+                                                            maxlength="8"
+                                                                :rules="[
+                                                                (val) => val.length === 8 || 'Card Number must be 8 characters long'
+                                                                ]"
+                                                            >
+                                                            </q-input>
+                                                    </td>
+                                                    <td class="text-right">
+                                                            <q-input
+                                                            label="Card Sort Code"
+                                                            maxlength="6"
+                                                            v-model="account.sortCode"
+                                                            @keyup="onCheckSortCodeLength"
+                                                            @blur="onFormatSortCode"
+                                                            >
+                                                            </q-input>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <q-toggle
+                                                        label="Default"
+                                                        v-model="account.is_default"
+                                                        type="text"
+                                                        >
+                                                        </q-toggle>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <q-icon name="remove_circle" color="negative" size="30px" @click="onRemoveItem(index)"  />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left">
+                                                    </td>
+                                                    <td class="text-left">
+                                                        <q-input
+                                                        label="Card Name"
+                                                        v-model="bank_account.card_name"
+                                                        type="text"
+                                                        >
+                                                        </q-input>
+                                                    </td>
+                                                    <td class="text-right">
+                                                            <q-input
+                                                            label="Card Account Number"
+                                                            v-model="bank_account.accountNumber"
+                                                            maxlength="8"
+                                                                :rules="[
+                                                                (val) => val.length === 8 || 'Card Number must be 8 characters long'
+                                                                ]"
+                                                            >
+                                                            </q-input>
+                                                    </td>
+                                                    <td class="text-right">
+                                                            <q-input
+                                                            label="Card Sort Code"
+                                                            maxlength="6"
+                                                            v-model="bank_account.sortCode"
+                                                            @keyup="onCheckSortCodeLength"
+                                                            @blur="onFormatSortCode"
+                                                            >
+                                                            </q-input>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <q-toggle
+                                                        label="Default"
+                                                        v-model="bank_account.is_default"
+                                                        type="text"
+                                                        >
+                                                        </q-toggle>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <q-icon name="add_circle" color="positive" size="30px" @click="onAddItem" />
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                                </q-markup-table>
                                            </div>
                                    </form>
                                </q-card-section>
@@ -273,13 +353,34 @@
                  email: '',
                  address: '',
                  postcode: '',
+             },
+             bank_account: {
                  accountNumber: '',
                  sortCode: '',
+                 card_name: '',
+                 is_default: false
              },
+             bank_accounts: [],
              importedContacts: []
          }
      },
      methods: {
+onAddItem () {
+    console.log('hiii')
+this.bank_accounts.push({
+    accountNumber: this.bank_account.accountNumber,
+    sortCode: this.bank_account.sortCode,
+    card_name: this.bank_account.card_name,
+    is_default: this.bank_account.is_default
+})
+},
+onRemoveItem (index) {
+this.bank_accounts = this.bank_accounts.filter((item,indexItem) => {
+    if(indexItem !== index) {
+        return item;
+    }
+})
+},
 onImportContacts() {
 var options = new ContactFindOptions();
 options.multiple = true;
@@ -329,12 +430,12 @@ onError(contactError) {
              this.userDetails.email = this.user.email
          },
          onFormatSortCode () {
-             if(!this.sortCodeFormatted && this.userDetails.sortCode.length === 6 ){
+             if(!this.sortCodeFormatted && this.bank_account.sortCode.length === 6 ){
              console.log('hello')
            
-           let res = this.chunk(this.userDetails.sortCode, 2).join('-')
+           let res = this.chunk(this.bank_account.sortCode, 2).join('-')
 
-           this.userDetails.sortCode = res
+           this.bank_account.sortCode = res
            this.sortCodeFormatted = true
              }
          },
