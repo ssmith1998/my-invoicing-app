@@ -63,6 +63,7 @@
                                                                     label="Card Name"
                                                                     v-model="account.card_name"
                                                                     type="text"
+                                                                    :readonly="!edit"
                                                                     >
                                                                     </q-input>
                                                             </div>
@@ -74,6 +75,7 @@
                                                                 :rules="[
                                                                 (val) => val.length === 8 || 'Card Number must be 8 characters long'
                                                                 ]"
+                                                            :readonly="!edit"
                                                             >
                                                             </q-input>
                                                             </div>
@@ -84,6 +86,7 @@
                                                             v-model="account.sortCode"
                                                             @keyup="onCheckSortCodeLength"
                                                             @blur="onFormatSortCode"
+                                                            :readonly="!edit"
                                                             >
                                                             </q-input>
                                                             </div>
@@ -92,10 +95,15 @@
                                                             label="Default"
                                                             v-model="account.is_default"
                                                             type="text"
+                                                            :disable="!edit"
                                                             >
                                                             </q-toggle>
                                                             </div>
                                                         </div>
+                                                            <q-card-actions  class="flex justify-between">
+                                                                <q-btn v-show="edit" label="Update" color="primary" />
+                                                                <q-icon v-show="!edit" name="edit" color="primary" size="32px" @click="edit = true" />
+                                                            </q-card-actions>
                                                     </q-card-section>
 
                                                 </q-card>
