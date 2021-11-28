@@ -54,32 +54,20 @@
                                                <div class="head">
                                             <h5 class="q-ma-none q-pt-md">Billing Information</h5>
                                                </div>
-                                               <q-markup-table>
-                                                <thead>
-                                                    <tr>
-                                                    <th class="text-left">#</th>
-                                                    <th class="text-left">Card Name</th>
-                                                    <th class="text-right">Card Account Number</th>
-                                                    <th class="text-right">Card Sort Code</th>
-                                                    <th class="text-right">Default</th>
-                                                    <th class="text-right"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr style="background:lightgrey;" v-for="(account, index) in bank_accounts" :key="index">
-                                                    <td class="text-left">
-                                                        {{index + 1}}
-                                                    </td>
-                                                    <td class="text-left">
-                                                        <q-input
-                                                        label="Card Name"
-                                                        v-model="account.card_name"
-                                                        type="text"
-                                                        >
-                                                        </q-input>
-                                                    </td>
-                                                    <td class="text-right">
-                                                            <q-input
+                                                <q-card v-for="(account, index) in bank_accounts" :key="index" class="q-my-md q-pa-lg">
+                                                <q-icon name="remove_circle" color="negative" size="30px" @click="onRemoveItem(index)" style="position: absolute; top:5px; right:5px; z-index:3;"  />
+                                                    <q-card-section>
+                                                        <div class="row">
+                                                            <div class="col-xs-12 col-sm-6 q-pa-sm">
+                                                                 <q-input
+                                                                    label="Card Name"
+                                                                    v-model="account.card_name"
+                                                                    type="text"
+                                                                    >
+                                                                    </q-input>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-6 q-pa-sm">
+                                                                 <q-input
                                                             label="Card Account Number"
                                                             v-model="account.accountNumber"
                                                             maxlength="8"
@@ -88,9 +76,9 @@
                                                                 ]"
                                                             >
                                                             </q-input>
-                                                    </td>
-                                                    <td class="text-right">
-                                                            <q-input
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-6 q-pa-sm">
+                                                                <q-input
                                                             label="Card Sort Code"
                                                             maxlength="6"
                                                             v-model="account.sortCode"
@@ -98,32 +86,33 @@
                                                             @blur="onFormatSortCode"
                                                             >
                                                             </q-input>
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <q-toggle
-                                                        label="Default"
-                                                        v-model="account.is_default"
-                                                        type="text"
-                                                        >
-                                                        </q-toggle>
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <q-icon name="remove_circle" color="negative" size="30px" @click="onRemoveItem(index)"  />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-left">
-                                                    </td>
-                                                    <td class="text-left">
-                                                        <q-input
-                                                        label="Card Name"
-                                                        v-model="bank_account.card_name"
-                                                        type="text"
-                                                        >
-                                                        </q-input>
-                                                    </td>
-                                                    <td class="text-right">
-                                                            <q-input
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-6 q-pa-sm">
+                                                            <q-toggle
+                                                            label="Default"
+                                                            v-model="account.is_default"
+                                                            type="text"
+                                                            >
+                                                            </q-toggle>
+                                                            </div>
+                                                        </div>
+                                                    </q-card-section>
+
+                                                </q-card>
+                                                <q-card class="q-pa-lg">
+                                                <q-icon name="add_circle" color="positive" size="30px" @click="onAddItem" style="position: absolute; top:5px; right:5px;"  />
+                                                    <q-card-section>
+                                                        <div class="row">
+                                                            <div class="col-xs-12 col-sm-6 q-pa-sm">
+                                                                 <q-input
+                                                                    label="Card Name"
+                                                                    v-model="bank_account.card_name"
+                                                                    type="text"
+                                                                    >
+                                                                    </q-input>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-6 q-pa-sm">
+                                                                 <q-input
                                                             label="Card Account Number"
                                                             v-model="bank_account.accountNumber"
                                                             maxlength="8"
@@ -132,9 +121,9 @@
                                                                 ]"
                                                             >
                                                             </q-input>
-                                                    </td>
-                                                    <td class="text-right">
-                                                            <q-input
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-6 q-pa-sm">
+                                                                <q-input
                                                             label="Card Sort Code"
                                                             maxlength="6"
                                                             v-model="bank_account.sortCode"
@@ -142,21 +131,19 @@
                                                             @blur="onFormatSortCode"
                                                             >
                                                             </q-input>
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <q-toggle
-                                                        label="Default"
-                                                        v-model="bank_account.is_default"
-                                                        type="text"
-                                                        >
-                                                        </q-toggle>
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <q-icon name="add_circle" color="positive" size="30px" @click="onAddItem" />
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                                </q-markup-table>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-6 q-pa-sm">
+                                                            <q-toggle
+                                                            label="Default"
+                                                            v-model="bank_account.is_default"
+                                                            type="text"
+                                                            >
+                                                            </q-toggle>
+                                                            </div>
+                                                        </div>
+                                                    </q-card-section>
+
+                                                </q-card>
                                            </div>
                                    </form>
                                </q-card-section>
@@ -366,7 +353,6 @@
      },
      methods: {
 onAddItem () {
-    console.log('hiii')
 this.bank_accounts.push({
     accountNumber: this.bank_account.accountNumber,
     sortCode: this.bank_account.sortCode,
