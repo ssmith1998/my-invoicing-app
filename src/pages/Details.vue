@@ -18,7 +18,7 @@
                        <q-tab-panel name="details">
                            <q-card>
                                <q-card-section>
-                                   <form>
+                                   <form @submit.prevent="onSaveDetails">
                                         <h5 class="q-ma-none">Details</h5>
                                        <div class="row">
                                            <div class="col-xs-12 col-sm-6 q-pa-md">
@@ -63,7 +63,7 @@
                                                                     label="Card Name"
                                                                     v-model="account.card_name"
                                                                     type="text"
-                                                                    :readonly="!edit"
+                                                                    readonly
                                                                     >
                                                                     </q-input>
                                                             </div>
@@ -75,7 +75,7 @@
                                                                 :rules="[
                                                                 (val) => val.length === 8 || 'Card Number must be 8 characters long'
                                                                 ]"
-                                                            :readonly="!edit"
+                                                            readonly
                                                             >
                                                             </q-input>
                                                             </div>
@@ -83,10 +83,10 @@
                                                                 <q-input
                                                             label="Card Sort Code"
                                                             maxlength="6"
-                                                            v-model="account.sortCode"
+                                                            v-model="account.sort_code"
                                                             @keyup="onCheckSortCodeLength"
                                                             @blur="onFormatSortCode"
-                                                            :readonly="!edit"
+                                                            readonly
                                                             >
                                                             </q-input>
                                                             </div>
@@ -95,14 +95,14 @@
                                                             label="Default"
                                                             v-model="account.is_default"
                                                             type="text"
-                                                            :disable="!edit"
+                                                            disable
                                                             >
                                                             </q-toggle>
                                                             </div>
                                                         </div>
                                                             <q-card-actions  class="flex justify-between">
                                                                 <q-btn v-show="edit" label="Update" color="primary" />
-                                                                <q-icon v-show="!edit" name="edit" color="primary" size="32px" @click="edit = true" />
+                                                                <q-icon v-show="!edit" name="edit" color="primary" size="32px" />
                                                             </q-card-actions>
                                                     </q-card-section>
 
@@ -134,7 +134,7 @@
                                                                 <q-input
                                                             label="Card Sort Code"
                                                             maxlength="6"
-                                                            v-model="bank_account.sortCode"
+                                                            v-model="bank_account.sort_code"
                                                             @keyup="onCheckSortCodeLength"
                                                             @blur="onFormatSortCode"
                                                             >
@@ -153,6 +153,7 @@
 
                                                 </q-card>
                                            </div>
+                                           <q-btn type="submit" label="Save Details" class="q-mt-md" color="primary" />
                                    </form>
                                </q-card-section>
                            </q-card>
@@ -351,7 +352,7 @@
              },
              bank_account: {
                  accountNumber: '',
-                 sortCode: '',
+                 sort_code: '',
                  card_name: '',
                  is_default: false
              },
@@ -360,10 +361,16 @@
          }
      },
      methods: {
+async onSaveDetails () {
+    console.log('details', this.bank_accounts)
+    const response = await this.$store.dispatch('details/store', {accounts: this.bank_accounts, details: this.userDetails})
+
+    console.log(response)
+},
 onAddItem () {
 this.bank_accounts.push({
     accountNumber: this.bank_account.accountNumber,
-    sortCode: this.bank_account.sortCode,
+    sort_code: this.bank_account.sort_code,
     card_name: this.bank_account.card_name,
     is_default: this.bank_account.is_default
 })
@@ -424,17 +431,17 @@ onError(contactError) {
              this.userDetails.email = this.user.email
          },
          onFormatSortCode () {
-             if(!this.sortCodeFormatted && this.bank_account.sortCode.length === 6 ){
+             if(!this.sortCodeFormatted && this.bank_account.sort_code.length === 6 ){
              console.log('hello')
            
-           let res = this.chunk(this.bank_account.sortCode, 2).join('-')
+           let res = this.chunk(this.bank_account.sort_code, 2).join('-')
 
-           this.bank_account.sortCode = res
+           this.bank_account.sort_code = res
            this.sortCodeFormatted = true
              }
          },
          onCheckSortCodeLength () {
-             if(this.userDetails.sortCode.length < 6) {
+             if(this.userDetails.sort_code.length < 6) {
                  this.sortCodeFormatted = false
              }
          },

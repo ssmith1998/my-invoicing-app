@@ -12,6 +12,13 @@ class BankAccount extends Model
     protected $fillable = [
         'sort_code',
         'account_number',
-        'card_name'
+        'card_name',
+        'user_id',
+        'is_default'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

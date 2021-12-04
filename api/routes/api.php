@@ -28,4 +28,6 @@ Route::post('login', 'App\Http\Controllers\AuthController@login');
 Route::middleware('auth:sanctum')->group(function () {
     //contacts
     Route::resource('/contacts', 'App\Http\Controllers\ContactController');
+    //details
+    Route::resource('/details', 'App\Http\Controllers\DetailsController');
 });

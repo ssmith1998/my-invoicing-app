@@ -7,6 +7,7 @@ import {
 
 import app from './app'
 import contact from './contact'
+import details from './details'
 
 /*
  * If not building with SSR mode, you can
@@ -20,7 +21,8 @@ import contact from './contact'
 export default store = createStore({
   modules: {
     app,
-    contact
+    contact,
+    details
   },
 
   // enable strict mode (adds overhead!)
